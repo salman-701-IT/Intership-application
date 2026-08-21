@@ -52,3 +52,9 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# database (regenerable via `bun run db:push && bun prisma/seed.ts`)
+db/*.db
+db/*.db-journal
+# user uploads (sandbox artifacts)
+upload/

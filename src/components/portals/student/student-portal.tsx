@@ -39,6 +39,7 @@ import {
   UserAvatar, SkillBar, EmptyState, LoadingGrid, AIBadge, JourneyTracker,
   ProgressRing, MetaRow,
 } from '@/components/platform/shared'
+import { WelcomeHero } from '@/components/platform/welcome-hero'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -546,7 +547,7 @@ function ApplicationsView({ user }: { user: DemoUser }) {
  *  3. DASHBOARD                                                       *
  * ================================================================== */
 
-function DashboardView({ user }: { user: DemoUser }) {
+function DashboardView({ user, setView }: { user: DemoUser; setView: (v: string) => void }) {
   const ov = useAsync(() => analyticsApi.overview('STUDENT', user.id), [user.id])
   const fb = useAsync<Feedback[]>(() => feedbackApi.list({ toUserId: user.id }), [user.id])
   const tasks = useAsync<Task[]>(() => tasksApi.list({ assigneeId: user.id }), [user.id])
@@ -572,19 +573,22 @@ function DashboardView({ user }: { user: DemoUser }) {
 
   return (
     <>
-      <PageHeader
-        title="Student Dashboard"
-        description={`Welcome back, ${user.name.split(' ')[0]}. Here's your journey snapshot.`}
-        eyebrow="InternForge · Student"
-        icon={LayoutDashboard}
+      <WelcomeHero
+        role="STUDENT"
+        userName={user.name}
+        userTitle={user.title}
+        headline={`Welcome back, ${user.name.split(' ')[0]}.`}
+        subtext="Here's your journey snapshot — every internship you do here produces measurable skills, verified work, and career-ready evidence."
+        activeStage="Work"
+        stats={[
+          { label: 'Active projects', value: student?.projects ?? 0, icon: FolderGit2 },
+          { label: 'Avg skill', value: `${student?.avgSkill ?? 0}%`, icon: TrendingUp },
+          { label: 'Certificates', value: student?.certificates ?? 0, icon: Award },
+          { label: 'Attendance', value: `${student?.attendanceRate ?? 100}%`, icon: Calendar },
+        ]}
+        primaryAction={{ label: 'Discover internships', onClick: () => setView('discover'), icon: Compass }}
+        secondaryAction={{ label: 'View portfolio', onClick: () => setView('portfolio'), icon: Globe2 }}
       />
-
-      <GlassCard className="p-5">
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Student journey</p>
-        <div className="mt-3 overflow-x-auto">
-          <JourneyTracker activeStage="Work" />
-        </div>
-      </GlassCard>
 
       {/* Stat cards */}
       <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -2206,7 +2210,7 @@ export function StudentPortal({ user, view, setView }: PortalProps) {
     switch (view) {
       case 'discover': return <DiscoverView user={demoUser} />
       case 'applications': return <ApplicationsView user={demoUser} />
-      case 'dashboard': return <DashboardView user={demoUser} />
+      case 'dashboard': return <DashboardView user={demoUser} setView={setView} />
       case 'project': return <ProjectView user={demoUser} />
       case 'kanban': return <KanbanView user={demoUser} />
       case 'skills': return <SkillsView user={demoUser} />

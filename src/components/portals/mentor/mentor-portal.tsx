@@ -22,6 +22,7 @@ import {
   GlassCard, PageHeader, SectionCard, StatCard, StatusPill, ScoreBadge,
   UserAvatar, SkillBar, EmptyState, LoadingGrid, AIBadge, ProgressRing, MetaRow,
 } from '@/components/platform/shared'
+import { WelcomeHero } from '@/components/platform/welcome-hero'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -278,21 +279,20 @@ function MentorDashboardView({ user, setView }: { user: User; setView: (v: strin
 
   return (
     <>
-      <PageHeader
-        eyebrow="InternForge · Mentor"
-        title="Mentor Dashboard"
-        description={`Welcome back, ${user.name}. ${mentor.pendingReviews} submission${mentor.pendingReviews === 1 ? '' : 's'} await your review.`}
-        icon={LayoutDashboard}
-        actions={
-          <>
-            <Button size="sm" onClick={() => setView('reviews')}>
-              <CheckCircle2 className="h-4 w-4" /> Review queue
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => setView('interns')}>
-              <Users className="h-4 w-4" /> My interns
-            </Button>
-          </>
-        }
+      <WelcomeHero
+        role="MENTOR"
+        userName={user.name}
+        userTitle={user.title}
+        headline={`Welcome back, ${user.name.split(' ')[0]}.`}
+        subtext={`${mentor.pendingReviews} submission${mentor.pendingReviews === 1 ? '' : 's'} await your review. Guide your interns with structured feedback and AI-assisted evaluation.`}
+        stats={[
+          { label: 'My interns', value: mentor.mentees, icon: Users },
+          { label: 'To review', value: mentor.pendingReviews, icon: CheckCircle2 },
+          { label: 'Evaluations', value: mentor.evaluations, icon: Star },
+          { label: 'Avg score', value: `${mentor.avgScore}/100`, icon: TrendingUp },
+        ]}
+        primaryAction={{ label: 'Review queue', onClick: () => setView('reviews'), icon: CheckCircle2 }}
+        secondaryAction={{ label: 'My interns', onClick: () => setView('interns'), icon: Users }}
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -456,7 +456,8 @@ function MentorInternsView({ user, setView }: { user: User; setView: (v: string)
     return Array.from(map.values())
   }, [projects, evaluationsReq.data])
 
-  // Load skills per intern (lazy, once)
+  // Load skills per intern (lazy, once). Guarded so it stops after the first
+  // successful load per intern — never re-runs for an already-loaded intern.
   React.useEffect(() => {
     let active = true
     ;(async () => {
@@ -475,20 +476,18 @@ function MentorInternsView({ user, setView }: { user: User; setView: (v: string)
     return () => {
       active = false
     }
-  }, [interns, skillMap])
+  }, [interns])
 
-  // compute skill avg per intern
-  React.useEffect(() => {
-    setSkillMap((m) => {
-      const updated = { ...m }
-      for (const intern of interns) {
-        const skills = updated[intern.user.id]
-        if (skills && skills.length) {
-          intern.skillAvg = Math.round(skills.reduce((s, x) => s + x.current, 0) / skills.length)
-        }
+  // Derive skill averages as a pure memo (no setState → no infinite loop).
+  const skillAvg: Record<string, number> = React.useMemo(() => {
+    const out: Record<string, number> = {}
+    for (const intern of interns) {
+      const skills = skillMap[intern.user.id]
+      if (skills && skills.length) {
+        out[intern.user.id] = Math.round(skills.reduce((s, x) => s + x.current, 0) / skills.length)
       }
-      return updated
-    })
+    }
+    return out
   }, [interns, skillMap])
 
   const [selected, setSelected] = React.useState<InternAggregate | null>(null)
@@ -575,7 +574,7 @@ function MentorInternsView({ user, setView }: { user: User; setView: (v: string)
               <div className="space-y-1.5 text-sm">
                 <MetaRow label="Project" value={<span className="truncate">{intern.project.title}</span>} />
                 <MetaRow label="Latest eval" value={intern.latestScore ? <ScoreBadge score={intern.latestScore} /> : <span className="text-xs text-muted-foreground">—</span>} />
-                <MetaRow label="Skill avg" value={<span className="font-semibold tabular-nums">{intern.skillAvg ?? '—'}%</span>} />
+                <MetaRow label="Skill avg" value={<span className="font-semibold tabular-nums">{skillAvg[intern.user.id] != null ? `${skillAvg[intern.user.id]}%` : '—'}</span>} />
                 <MetaRow label="Submissions" value={internSubmissions(intern).length} />
               </div>
 

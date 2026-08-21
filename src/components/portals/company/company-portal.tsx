@@ -28,6 +28,7 @@ import {
   ScoreBadge, UserAvatar, SkillBar, EmptyState, LoadingGrid,
   ProgressRing, AIBadge,
 } from '@/components/platform/shared'
+import { WelcomeHero } from '@/components/platform/welcome-hero'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -207,16 +208,20 @@ function DashboardView({
 
   return (
     <div className="animate-in-fade space-y-5">
-      <PageHeader
-        eyebrow="InternForge · Company"
-        title={`${user.company?.name ?? 'Company'} Dashboard`}
-        description={`Welcome back, ${user.name}. Here's your hiring funnel at a glance.`}
-        icon={LayoutDashboard}
-        actions={
-          <Button size="sm" onClick={() => setView('internships')}>
-            <Plus className="h-4 w-4" /> New posting
-          </Button>
-        }
+      <WelcomeHero
+        role="COMPANY"
+        userName={user.name}
+        userTitle={user.title}
+        headline={`${user.company?.name ?? 'Company'} Dashboard`}
+        subtext={`Welcome back, ${user.name.split(' ')[0]}. Here's your hiring funnel at a glance — ${c.applications ?? 0} applicants, ${c.conversionRate ?? 0}% conversion.`}
+        stats={[
+          { label: 'Internships', value: internships.filter(i => i.status === 'OPEN').length, icon: Briefcase },
+          { label: 'Applicants', value: c.applications ?? 0, icon: Users },
+          { label: 'Accepted', value: c.accepted ?? 0, icon: CheckCircle2 },
+          { label: 'Conversion', value: `${c.conversionRate ?? 0}%`, icon: TrendingUp },
+        ]}
+        primaryAction={{ label: 'New posting', onClick: () => setView('internships'), icon: Plus }}
+        secondaryAction={{ label: 'View pipeline', onClick: () => setView('applicants'), icon: UserCheck }}
       />
 
       {/* Stat cards */}
