@@ -1,22 +1,23 @@
 'use client'
 
 import * as React from 'react'
-import { Github, Sparkles, Heart } from 'lucide-react'
+import { Github, Sparkles, Heart, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { usePlatform } from '@/lib/role-store'
 import { NAV } from './nav-config'
 import { ThemeToggle } from './theme-toggle'
 import { RoleSwitcher } from './role-switcher'
 import { NotificationBell } from './notification-bell'
-import { UserAvatar } from './shared'
+import { DocsViewer } from './docs-viewer'
+import { UserAvatar, AIBadge } from './shared'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { AIBadge } from './shared'
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const { role, view, setView, user } = usePlatform()
   const nav = NAV[role] ?? []
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const [docsOpen, setDocsOpen] = React.useState(false)
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -49,6 +50,15 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 rounded-xl text-muted-foreground hover:text-foreground"
+              onClick={() => setDocsOpen(true)}
+            >
+              <BookOpen className="h-4 w-4" />
+              <span className="hidden lg:inline">Docs</span>
+            </Button>
             <NotificationBell />
             <ThemeToggle />
             <RoleSwitcher />
@@ -137,6 +147,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+
+      {/* Documentation drawer */}
+      <DocsViewer open={docsOpen} onOpenChange={setDocsOpen} />
     </div>
   )
 }
