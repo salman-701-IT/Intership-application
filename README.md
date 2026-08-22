@@ -1,6 +1,10 @@
-# InternForge — Verified Internship Platform
+# InternForge — by Yumaris Agency
 
-> Turn internships into **measurable skills, verified work, mentor feedback, and career-ready evidence** — not just attendance and a certificate.
+> **Yumaris Agency** presents **InternForge** — turn internships into **measurable skills, verified work, mentor feedback, and career-ready evidence** — not just attendance and a certificate.
+
+<div align="center">
+  <img src="public/logo-icon.jpg" alt="Yumaris Agency logo" width="96" height="96" />
+</div>
 
 InternForge is a production-ready, full-stack internship management platform serving **students, mentors, companies, and administrators**. It is built around a single guiding principle:
 
@@ -137,4 +141,4 @@ MIT — see [`docs/README.md`](./docs/README.md).
 
 ---
 
-Built with ❤️ on **Z.ai**. The platform's north-star metric: **verified certificates issued per week** — because an internship's value is measured, not just attended.
+Built with ❤️ by **Yumaris Agency** on **Z.ai**. The platform's north-star metric: **verified certificates issued per week** — because an internship's value is measured, not just attended.

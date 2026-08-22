@@ -50,6 +50,10 @@ export function WelcomeHero({
               <span>{accent.emoji}</span>
               {role === 'ADMIN' ? 'Super Admin' : role.charAt(0) + role.slice(1).toLowerCase()} Portal
             </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-foreground shadow-sm ring-1 ring-border/60 dark:bg-white">
+              <img src="/logo-icon.jpg" alt="Yumaris Agency" className="h-3.5 w-3.5 rounded-[3px]" />
+              Yumaris Agency
+            </span>
             <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
               <ShieldCheck className="h-3 w-3" /> Verified platform
             </span>

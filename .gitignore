@@ -58,3 +58,9 @@ db/*.db
 db/*.db-journal
 # user uploads (sandbox artifacts)
 upload/
+
+# sandbox artifacts
+/tool-results/
+/.zscripts/
+/examples/
+/tests/

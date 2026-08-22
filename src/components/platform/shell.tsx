@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Github, Sparkles, Heart, BookOpen, Search, Command as CommandIcon } from 'lucide-react'
+import { Github, Heart, BookOpen, Search, Command as CommandIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { usePlatform } from '@/lib/role-store'
 import { NAV } from './nav-config'
@@ -55,13 +55,14 @@ function ShellInner({ children }: { children: React.ReactNode }) {
 
           {/* Brand */}
           <div className="flex items-center gap-2.5">
-            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl gradient-emerald text-white shadow-soft">
-              <Sparkles className="h-5 w-5" />
-              <span className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
+            <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-white shadow-soft ring-1 ring-border/60 dark:bg-white">
+              <img src="/logo-icon.jpg" alt="Yumaris Agency logo" className="h-full w-full object-cover" />
             </div>
             <div className="flex flex-col leading-none">
               <span className="text-base font-bold tracking-tight">InternForge</span>
-              <span className="hidden text-[10px] text-muted-foreground sm:block">Verified internships · measurable skills</span>
+              <span className="hidden text-[10px] text-muted-foreground sm:block">
+                by <span className="font-semibold text-foreground/80">Yumaris Agency</span> · verified internships
+              </span>
             </div>
             <AIBadge className="ml-1 hidden md:inline-flex" />
           </div>
@@ -196,12 +197,12 @@ function ShellInner({ children }: { children: React.ReactNode }) {
       {/* Sticky footer */}
       <footer className="relative z-10 mt-auto border-t border-border/60 glass">
         <div className="mx-auto flex w-full max-w-[1400px] flex-col items-center justify-between gap-2 px-4 py-3 text-xs text-muted-foreground sm:flex-row">
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="h-3 w-3 text-primary" />
-            <span>InternForge — turn internships into measurable, verified skills.</span>
+          <div className="flex items-center gap-2">
+            <img src="/logo-icon.jpg" alt="Yumaris Agency" className="h-5 w-5 rounded-md ring-1 ring-border/60" />
+            <span><span className="font-semibold text-foreground/80">InternForge</span> by Yumaris Agency — measurable, verified skills.</span>
           </div>
           <div className="flex items-center gap-3">
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-foreground">
+            <a href="https://github.com/salman-701-IT/Intership-application" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-foreground">
               <Github className="h-3.5 w-3.5" /> Source
             </a>
             <span className="inline-flex items-center gap-1">

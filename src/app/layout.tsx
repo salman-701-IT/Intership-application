@@ -16,16 +16,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InternForge — Verified Internship Platform",
+  title: "InternForge — by Yumaris Agency | Verified Internship Platform",
   description:
-    "A production-ready internship management platform that turns internships into measurable skills, verified work, mentor feedback, and career-ready evidence.",
-  keywords: ["internship", "mentorship", "verified skills", "portfolio", "career", "platform"],
-  authors: [{ name: "InternForge" }],
+    "InternForge by Yumaris Agency — a production-ready internship management platform that turns internships into measurable skills, verified work, mentor feedback, and career-ready evidence.",
+  keywords: ["internship", "mentorship", "verified skills", "portfolio", "career", "Yumaris", "platform"],
+  authors: [{ name: "Yumaris Agency" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo-icon.jpg",
+    shortcut: "/logo-icon.jpg",
+    apple: "/logo-icon.jpg",
   },
   openGraph: {
-    title: "InternForge — Verified Internship Platform",
+    title: "InternForge — by Yumaris Agency",
     description: "Turn internships into measurable skills, verified work, and career-ready evidence.",
     siteName: "InternForge",
     type: "website",
